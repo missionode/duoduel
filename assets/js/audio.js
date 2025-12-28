@@ -5,6 +5,9 @@ const SoundFX = {
         if (!this.ctx) {
             this.ctx = new (window.AudioContext || window.webkitAudioContext)();
         }
+        if (this.ctx.state === 'suspended') {
+            this.ctx.resume();
+        }
     },
 
     playTone: function(freq, type, duration, vol = 0.1) {
