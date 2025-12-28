@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuoDuel | Levels</title>
+    <link rel="stylesheet" href="assets/css/tailwind.css"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"><link rel="manifest" href="manifest.json"><script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js")}</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .serif { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen p-6">
+
+    <header class="max-w-4xl mx-auto mb-12 flex justify-between items-end">
+        <div>
+            <h1 class="text-4xl font-black serif">Choose Your Path</h1>
+            <p class="text-gray-500 uppercase tracking-widest text-xs mt-2">Level Selection</p>
+        </div>
+        <div class="text-right flex flex-col items-end gap-2">
+            <div>
+                <p class="text-xs text-gray-400 uppercase tracking-widest">Players</p>
+                <p class="text-sm font-bold"><span id="his-display" class="text-blue-600"></span> & <span id="her-display" class="text-pink-600"></span></p>
+            </div>
+            <button onclick="resetGame()" class="text-[10px] uppercase tracking-widest text-red-400 hover:text-red-600 border-b border-transparent hover:border-red-600 transition-all pb-0.5">
+                Reset Game
+            </button>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="level-grid">
+        <!-- Level cards will be injected here -->
+    </div>
+
+    <!-- Cheat Code Toggle -->
+    <div class="fixed bottom-6 right-6 flex items-center gap-2">
+        <input type="password" id="cheat-input" placeholder="Access Key" 
+            class="w-0 overflow-hidden transition-all duration-300 bg-white border border-gray-200 rounded-full px-0 py-2 text-xs focus:w-32 focus:px-4 outline-none">
+        <button id="cheat-trigger" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 text-gray-500 text-xs hover:bg-gray-300 transition-colors">
+            ?
+        </button>
+    </div>
+
+    <script>
+        const levels = [
+            { id: 'acquaintance', name: 'Acquaintance', description: 'Testing the waters.', locked: false, image: 'assets/img/Acquaintance.png' },
+            { id: 'deepTalk', name: 'Deep Talk', description: 'The "Why" behind you.', locked: true, image: 'assets/img/deep talk.png' },
+            { id: 'intimacy', name: 'Intimacy', description: 'Emotional sync.', locked: true, image: 'assets/img/intimacy.png' },
+            { id: 'foreplay', name: 'Foreplay', description: 'Crossing boundaries.', locked: true, image: 'assets/img/foreplay.png' }
+        ];
+
+        const grid = document.getElementById('level-grid');
+        const hisDisplay = document.getElementById('his-display');
+        const herDisplay = document.getElementById('her-display');
+        const cheatInput = document.getElementById('cheat-input');
+        const cheatTrigger = document.getElementById('cheat-trigger');
+
+        hisDisplay.textContent = localStorage.getItem('hisName') || 'Him';
+        herDisplay.textContent = localStorage.getItem('herName') || 'Her';
+
+        function renderLevels() {
+            grid.innerHTML = '';
+            const allUnlocked = localStorage.getItem('allUnlocked') === 'true';
+
+            levels.forEach(level => {
+                // Check for individual level unlock or global unlock
+                const isUnlocked = level.id === 'acquaintance' || allUnlocked || localStorage.getItem('unlocked_' + level.id) === 'true';
+                const isLocked = !isUnlocked;
+                
+                const card = document.createElement('div');
+                card.className = `group relative h-64 w-full rounded-2xl overflow-hidden shadow-sm border border-gray-200 transition-all ${isLocked ? 'cursor-not-allowed' : 'cursor-pointer hover:shadow-xl hover:-translate-y-1'}`;
+                
+                card.innerHTML = `
+                    <img src="${level.image}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ${!isLocked ? 'group-hover:scale-110' : 'filter blur-sm'}">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900 to-transparent opacity-80"></div>
+                    
+                    <div class="absolute bottom-0 left-0 p-6 text-white drop-shadow-md ${isLocked ? 'filter blur-[1px] opacity-40' : ''}">
+                        <p class="text-[10px] uppercase tracking-widest opacity-90 mb-1 text-blue-200">Level</p>
+                        <h3 class="text-2xl font-bold serif">${level.name}</h3>
+                        <p class="text-xs opacity-90 mt-1 font-medium">${level.description}</p>
+                    </div>
+
+                    ${isLocked ? `
+                        <div class="absolute inset-0 bg-gray-900 bg-opacity-40 flex flex-col items-center justify-center text-white backdrop-filter backdrop-blur-sm">
+                            <span class="text-3xl mb-2">✕</span>
+                            <span class="text-xs uppercase tracking-widest font-bold">Locked</span>
+                        </div>
+                    ` : ''}
+
+                    <div class="absolute top-4 right-4 text-white/50 text-2xl font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                        △
+                    </div>
+                `;
+
+                if (!isLocked) {
+                    card.onclick = () => {
+                        localStorage.setItem('selectedLevel', level.id);
+                        window.location.href = 'toss.html';
+                    };
+                }
+
+                grid.appendChild(card);
+            });
+        }
+
+        cheatTrigger.onclick = () => {
+            cheatInput.classList.toggle('w-0');
+            cheatInput.classList.toggle('w-32');
+            cheatInput.classList.toggle('px-0');
+            cheatInput.classList.toggle('px-4');
+            cheatInput.focus();
+        };
+
+        cheatInput.onkeyup = (e) => {
+            if (e.key === 'Enter') {
+                if (cheatInput.value.toUpperCase() === 'ADEN') {
+                    localStorage.setItem('allUnlocked', 'true');
+                    renderLevels();
+                    cheatInput.value = '';
+                    cheatInput.classList.add('border-green-500');
+                    setTimeout(() => {
+                        cheatInput.classList.remove('w-32', 'px-4', 'border-green-500');
+                        cheatInput.classList.add('w-0', 'px-0');
+                    }, 1000);
+                } else {
+                    cheatInput.classList.add('border-red-500');
+                    setTimeout(() => cheatInput.classList.remove('border-red-500'), 1000);
+                }
+            }
+        };
+
+        function resetGame() {
+            if (confirm("Are you sure you want to reset the game? This will clear all names and progress.")) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+
+        renderLevels();
+    </script>
+<script src="assets/js/audio.js"></script></body>
+</html>

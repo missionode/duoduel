@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuoDuel | Results</title>
+    <link rel="stylesheet" href="assets/css/tailwind.css"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"><link rel="manifest" href="manifest.json"><script>if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js")}</script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .serif { font-family: 'Playfair Display', serif; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col items-center justify-center p-6">
+
+    <header class="text-center mb-12">
+        <h1 class="text-4xl font-black serif mb-2">The Settlement</h1>
+        <p class="text-gray-500 uppercase tracking-widest text-xs">A Bridge Has Been Built</p>
+    </header>
+
+    <div class="max-w-2xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <!-- His Result -->
+        <div class="bg-white py-16 px-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col items-center relative" id="his-card">
+            <p class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-4" id="his-name-res">HIS NAME</p>
+            <div class="text-6xl font-black serif mb-2" id="his-score-res">0</div>
+            <p class="text-xs text-gray-400 uppercase">Points Earned</p>
+            <div id="his-crown" class="hidden absolute -top-6 text-4xl">△</div>
+        </div>
+
+        <!-- Her Result -->
+        <div class="bg-white py-16 px-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col items-center relative" id="her-card">
+            <p class="text-xs font-bold text-pink-600 uppercase tracking-widest mb-4" id="her-name-res">HER NAME</p>
+            <div class="text-6xl font-black serif mb-2" id="her-score-res">0</div>
+            <p class="text-xs text-gray-400 uppercase">Points Earned</p>
+            <div id="her-crown" class="hidden absolute -top-6 text-4xl">△</div>
+        </div>
+    </div>
+
+    <div class="max-w-md w-full bg-gray-900 text-white p-8 rounded-3xl text-center shadow-2xl relative overflow-hidden">
+        <div class="relative z-10">
+            <p class="text-xs uppercase tracking-[0.3em] opacity-60 mb-4">Total Debt</p>
+            <h2 class="text-5xl font-black serif mb-6" id="amount-res">₹0</h2>
+            <p class="text-sm opacity-80 leading-relaxed" id="summary-text">
+                The connection was the real reward.
+            </p>
+        </div>
+        <!-- PlayStation icons background decoration -->
+        <div class="absolute -bottom-4 -right-4 text-white/5 text-9xl font-bold select-none">▢</div>
+        <div class="absolute -top-4 -left-4 text-white/5 text-9xl font-bold select-none">◯</div>
+    </div>
+
+    <div class="mt-12 flex gap-4">
+        <button onclick="window.location.href='levels.html'" class="px-8 py-4 bg-white border border-gray-200 rounded-full font-bold transition-all hover:bg-gray-50">Play Again</button>
+        <button onclick="window.location.href='levels.html'" class="px-8 py-4 bg-blue-600 text-white rounded-full font-bold transition-all hover:bg-blue-700">Next Level</button>
+    </div>
+
+    <script>
+        const hisName = localStorage.getItem('hisName') || 'Him';
+        const herName = localStorage.getItem('herName') || 'Her';
+        const hisScore = parseInt(localStorage.getItem('finalScoreHis') || 0);
+        const herScore = parseInt(localStorage.getItem('finalScoreHer') || 0);
+
+        document.getElementById('his-name-res').textContent = hisName.toUpperCase();
+        document.getElementById('her-name-res').textContent = herName.toUpperCase();
+        document.getElementById('his-score-res').textContent = hisScore;
+        document.getElementById('her-score-res').textContent = herScore;
+
+        const diff = Math.abs(hisScore - herScore);
+        const winner = hisScore > herScore ? hisName : (herScore > hisScore ? herName : null);
+        const loser = hisScore > herScore ? herName : (herScore > hisScore ? hisName : null);
+        const currentLevel = localStorage.getItem('selectedLevel');
+
+        // Unlock Progression Logic
+        const nextLevelBtn = document.querySelector('button[onclick="window.location.href=\'levels.html\'"]:last-child');
+        
+        if (currentLevel === 'acquaintance') {
+            localStorage.setItem('unlocked_deepTalk', 'true');
+        } else if (currentLevel === 'deepTalk') {
+            localStorage.setItem('unlocked_intimacy', 'true');
+        } else if (currentLevel === 'intimacy') {
+            localStorage.setItem('unlocked_foreplay', 'true');
+        } else if (currentLevel === 'foreplay') {
+            // Last Level Reached
+            nextLevelBtn.textContent = 'Game Over';
+            nextLevelBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            nextLevelBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            nextLevelBtn.onclick = null;
+        }
+
+        document.getElementById('amount-res').textContent = `₹${diff}`;
+
+        if (winner) {
+            const side = hisScore > herScore ? 'his' : 'her';
+            document.getElementById(`${side}-crown`).classList.remove('hidden');
+            document.getElementById(`${side}-card`).classList.add('ring-4', 'ring-blue-500/20');
+            document.getElementById('summary-text').textContent = `${loser} owes ${winner} ₹${diff} for the entertainment and honesty provided tonight.`;
+            
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#0284c7', '#e11d48', '#ffffff']
+            });
+        } else {
+            document.getElementById('summary-text').textContent = "It's a perfect harmony! No one owes anything; the connection itself was the reward.";
+        }
+    </script>
+<script src="assets/js/audio.js"></script></body>
+</html>

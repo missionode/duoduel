@@ -1,0 +1,13 @@
+{
+  "landing": {
+    "title": "DuoDuel",
+    "description": "A psychological journey from strangers to deeply connected partners.",
+    "rules": [
+      "92-card deck (45 Questions + 1 Boon per player).",
+      "Hit 'Like' (+1 point) if you enjoy the answer.",
+      "Hit 'Dislike' (-1 point) if the answer doesn't land.",
+      "Use your Boon (✨) wisely to skip a question once without penalty.",
+      "Final settlement: The loser pays the difference to the winner."
+    ]
+  }
+}
