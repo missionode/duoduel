@@ -87,6 +87,7 @@
         herNameDisp.textContent = herName;
 
         tossBtn.addEventListener('click', () => {
+            SoundFX.start(); // Play toss sound
             tossBtn.disabled = true;
             tossBtn.classList.add('opacity-30');
             
