@@ -10,14 +10,15 @@ const SoundFX = {
         }
     },
 
-    playTone: function(freq, type, duration, vol = 0.1) {
+    playTone: function(freq, type, duration, vol = 0.5) {
+        console.log(`Playing tone: ${freq}Hz, ${type}`);
         this.init();
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = type;
         osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
         gain.gain.setValueAtTime(vol, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start();
@@ -30,53 +31,46 @@ const SoundFX = {
     },
 
     flip: function() {
-        // Card flip - low whoosh
-        this.playTone(300, 'triangle', 0.1, 0.05);
-    },
-
-    success: function() {
-        // Like - Major chord arpeggio
+        // Card flip - clearer high-pitch whoosh
         this.init();
-        const now = this.ctx.currentTime;
-        [523.25, 659.25, 783.99].forEach((freq, i) => { // C Major
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.frequency.value = freq;
-            gain.gain.setValueAtTime(0.05, now + i * 0.05);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.3);
-            osc.connect(gain);
-            gain.connect(this.ctx.destination);
-            osc.start(now + i * 0.05);
-            osc.stop(now + i * 0.05 + 0.3);
-        });
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine'; // Sine cuts through better than triangle
+        osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.4);
+        
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.4);
+        
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.4);
     },
 
-    failure: function() {
-        // Dislike - Low dissonance
-        this.playTone(150, 'sawtooth', 0.2, 0.05);
-        setTimeout(() => this.playTone(140, 'sawtooth', 0.2, 0.05), 50);
-    },
-
-    joker: function() {
-        // Sparkle - High frequency random sine waves
-        this.init();
-        const now = this.ctx.currentTime;
-        for(let i=0; i<10; i++) {
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.frequency.value = 1000 + Math.random() * 2000;
-            gain.gain.setValueAtTime(0.02, now + i * 0.05);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.05 + 0.1);
-            osc.connect(gain);
-            gain.connect(this.ctx.destination);
-            osc.start(now + i * 0.05);
-            osc.stop(now + i * 0.05 + 0.1);
-        }
-    },
-    
     start: function() {
-        // Game Start / Toss - Rising pitch
-        this.playTone(400, 'sine', 0.3, 0.1);
-        setTimeout(() => this.playTone(600, 'sine', 0.3, 0.1), 100);
+        // Coin Spin - 3 seconds of rapid ticking + final ding
+        this.init();
+        const now = this.ctx.currentTime;
+        const duration = 3.0;
+        
+        // Spinning sound (rapid clicks)
+        for (let i = 0; i < 30; i++) {
+            const time = now + (i * 0.1);
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.frequency.value = 800 + (Math.random() * 200);
+            gain.gain.setValueAtTime(0.05, time);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + 0.05);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(time);
+            osc.stop(time + 0.05);
+        }
+
+        // Landing sound (Ding)
+        setTimeout(() => {
+            this.playTone(1200, 'sine', 1.0, 0.3);
+        }, 3000);
     }
 };
