@@ -78,7 +78,7 @@
     <div class="fixed inset-0 flex flex-col md:flex-row">
         
         <!-- His Side -->
-        <div id="his-area" class="absolute inset-0 md:static md:flex-1 flex flex-col items-center justify-center p-8 transition-all duration-500 bg-blue-50 z-10">
+        <div id="his-area" class="absolute inset-0 flex flex-col items-center justify-center p-8 transition-all duration-500 bg-blue-50 z-10">
             <div class="absolute top-8 left-8 flex items-center gap-4 z-20">
                 <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl shadow-lg" id="his-score-disp">0</div>
                 <div>
@@ -129,7 +129,7 @@
         </div>
 
         <!-- Her Side -->
-        <div id="her-area" class="absolute inset-0 md:static md:flex-1 flex flex-col items-center justify-center p-8 transition-all duration-500 bg-pink-50 z-0">
+        <div id="her-area" class="absolute inset-0 flex flex-col items-center justify-center p-8 transition-all duration-500 bg-pink-50 z-0">
             <div class="absolute top-8 right-8 flex items-center gap-4 text-right flex-row-reverse z-20">
                 <div class="w-12 h-12 rounded-full bg-pink-600 flex items-center justify-center text-white font-bold text-xl shadow-lg" id="her-score-disp">0</div>
                 <div>
@@ -231,11 +231,7 @@
             const herCard = document.getElementById('her-card');
 
             if (gameState.currentTurn === 'his') {
-                // Desktop Logic (Opacity)
-                hisArea.classList.remove('md:opacity-50', 'md:grayscale-[0.5]');
-                herArea.classList.add('md:opacity-50', 'md:grayscale-[0.5]');
-                
-                // Mobile Logic (Visibility & Z-Index)
+                // Show His Area, Hide Her Area
                 hisArea.classList.remove('invisible', 'opacity-0', 'z-0');
                 hisArea.classList.add('visible', 'opacity-100', 'z-10');
                 
@@ -245,11 +241,7 @@
                 hisCard.parentElement.classList.remove('pointer-events-none');
                 herCard.parentElement.classList.add('pointer-events-none');
             } else {
-                // Desktop Logic
-                herArea.classList.remove('md:opacity-50', 'md:grayscale-[0.5]');
-                hisArea.classList.add('md:opacity-50', 'md:grayscale-[0.5]');
-                
-                // Mobile Logic
+                // Show Her Area, Hide His Area
                 herArea.classList.remove('invisible', 'opacity-0', 'z-0');
                 herArea.classList.add('visible', 'opacity-100', 'z-10');
                 
