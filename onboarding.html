@@ -35,9 +35,9 @@
 
     <!-- Ready Button Footer -->
     <div class="bg-white border-t border-gray-100 p-6 flex flex-col items-center gap-4">
-        <button id="ready-btn" disabled 
-            class="px-12 py-4 bg-gray-900 text-white rounded-full opacity-30 cursor-not-allowed transition-all hover:scale-105 active:scale-95">
-            Ready to Begin
+        <button id="ready-btn" 
+            class="px-12 py-4 bg-gray-900 text-white rounded-full transition-all hover:scale-105 active:scale-95">
+            Begin
         </button>
         <p class="text-[10px] text-gray-400 uppercase tracking-widest">This experience is designed for opposite-sex pairs</p>
     </div>
@@ -47,22 +47,12 @@
         const herInput = document.getElementById('her-name');
         const readyBtn = document.getElementById('ready-btn');
 
-        function checkInputs() {
-            if (hisInput.value.trim() && herInput.value.trim()) {
-                readyBtn.disabled = false;
-                readyBtn.classList.remove('opacity-30', 'cursor-not-allowed');
-            } else {
-                readyBtn.disabled = true;
-                readyBtn.classList.add('opacity-30', 'cursor-not-allowed');
-            }
-        }
-
-        hisInput.addEventListener('input', checkInputs);
-        herInput.addEventListener('input', checkInputs);
-
         readyBtn.addEventListener('click', () => {
-            localStorage.setItem('hisName', hisInput.value.trim());
-            localStorage.setItem('herName', herInput.value.trim());
+            const hisName = hisInput.value.trim() || "Him";
+            const herName = herInput.value.trim() || "Her";
+
+            localStorage.setItem('hisName', hisName);
+            localStorage.setItem('herName', herName);
             window.location.href = 'levels.html';
         });
     </script>
