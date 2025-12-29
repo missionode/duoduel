@@ -1,4 +1,4 @@
-const CACHE_NAME = 'duoduel-v2';
+const CACHE_NAME = 'duoduel-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
