@@ -72,5 +72,29 @@ const SoundFX = {
         setTimeout(() => {
             this.playTone(1200, 'sine', 1.0, 0.3);
         }, 3000);
+    },
+
+    success: function() {
+        // Positive chime (Major chord arpeggio: C5, E5, G5)
+        // Using setTimeout to stagger the notes
+        this.playTone(523.25, 'sine', 0.3, 0.2); 
+        setTimeout(() => this.playTone(659.25, 'sine', 0.3, 0.2), 100); 
+        setTimeout(() => this.playTone(783.99, 'sine', 0.4, 0.2), 200); 
+    },
+
+    failure: function() {
+        // Negative buzz/descending
+        this.playTone(150, 'sawtooth', 0.4, 0.15);
+        setTimeout(() => this.playTone(100, 'sawtooth', 0.4, 0.15), 150);
+    },
+
+    joker: function() {
+        // Magical shimmer (Ascending sequence)
+        this.init();
+        for(let i=0; i<5; i++) {
+            setTimeout(() => {
+                this.playTone(1000 + (i*200), 'sine', 0.3, 0.1);
+            }, i * 50);
+        }
     }
 };
