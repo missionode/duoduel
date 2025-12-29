@@ -262,6 +262,10 @@
             
             if (card.classList.contains('flipped')) return;
 
+            // Cleanup previous dynamic elements
+            const cardFront = card.querySelector('.card-front');
+            cardFront.querySelectorAll('.dynamic-element').forEach(el => el.remove());
+
             SoundFX.flip(); // Play flip sound
 
             const questionData = gameState.questions[side][gameState.currentIndex[side]];
@@ -277,7 +281,7 @@
             if (timerDuration) {
                 const timerBtn = document.createElement('button');
                 timerBtn.id = `${side}-start-timer`;
-                timerBtn.className = 'mt-4 px-4 py-1 bg-gray-200 text-gray-600 text-[10px] uppercase tracking-widest rounded-full hover:bg-gray-300 transition-all font-bold';
+                timerBtn.className = 'dynamic-element mt-4 px-4 py-1 bg-gray-200 text-gray-600 text-[10px] uppercase tracking-widest rounded-full hover:bg-gray-300 transition-all font-bold';
                 timerBtn.textContent = `Start Timer (${timerDuration}s)`;
                 timerBtn.onclick = (e) => {
                     e.stopPropagation();
@@ -285,16 +289,16 @@
                     SoundFX.click(); // Play click sound
                     startTimer(side, timerDuration);
                 };
-                card.querySelector('.card-front').appendChild(timerBtn);
+                cardFront.appendChild(timerBtn);
             }
 
             // Joker Badge Logic
-            const jokerBadge = document.createElement('div');
             if (!gameState[`${side}JokerUsed`]) {
-                jokerBadge.className = 'absolute top-4 right-4 text-yellow-400 font-bold text-xl animate-pulse';
+                const jokerBadge = document.createElement('div');
+                jokerBadge.className = 'dynamic-element absolute top-4 right-4 text-yellow-400 font-bold text-xl animate-pulse';
                 jokerBadge.innerHTML = '✨';
                 jokerBadge.title = "Boon Available";
-                card.querySelector('.card-front').appendChild(jokerBadge);
+                cardFront.appendChild(jokerBadge);
             }
         }
 
