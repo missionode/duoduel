@@ -12,7 +12,7 @@ This design brief outlines the visual and functional specifications for **DuoDue
 
 * **Header:** Text logo "DuoDuel" using the Triangle (△) as the 'A' or 'V' equivalent.
 * **Body:** A centered card using `@tailwindcss/typography`.
-* **Rules Section:** Bullet points explaining the 45-card deck, the ₹1 reward per answer, and the final settlement math.
+* **Rules Section:** "The Terms of Entanglement" explaining the deck, scoring, and that **"The needy takes the difference"** (winner collects).
 
 
 * **CTA Button:** A large "Start Onboarding" button with a Square (▢) icon prefix.
@@ -29,13 +29,13 @@ This design brief outlines the visual and functional specifications for **DuoDue
 
 ## 4. Level Selection (The Progress)
 
-* **Grid:** A 2x3 grid of cards representing levels (Acquaintance, Deep Talk, Intimacy, Foreplay, etc.).
+* **Grid:** A grid of cards representing levels: **Acquaintance, Deep Talk, Safe Spark, Intimacy, Foreplay**.
 * **Visual State:** * **Level 1 (Acquaintance):** Full color, high contrast.
-* **Levels 2-6:** `backdrop-blur-md` with a lock icon.
+* **Levels 2-5:** `backdrop-blur-md` with a lock icon.
 
 
 * **The Cheat Feature:** A tiny `(?)` icon at the bottom right of the screen.
-* **Interaction:** Clicking it opens a minimalist prompt: *"Enter Access Key"*. Correct code unlocks the blur across all levels.
+* **Interaction:** Clicking it opens a minimalist prompt: *"Enter Access Key"*. Correct code (`ADEN`) unlocks the blur across all levels.
 
 
 
@@ -49,8 +49,8 @@ This design brief outlines the visual and functional specifications for **DuoDue
 
 This is the core "Engine" of your application.
 
-* **Deck Layout:** * **Left Stack (His):** 46 cards (45 Questions + 1 Joker) face down.
-* **Right Stack (Her):** 46 cards (45 Questions + 1 Joker) face down.
+* **Deck Layout:** * **Left Stack (His):** Face down.
+* **Right Stack (Her):** Face down.
 
 
 * **Card Design:** Back of cards features a repeating pattern of the controller symbols.
@@ -58,11 +58,11 @@ This is the core "Engine" of your application.
 2.  **3D Animation:** The card performs a 180-degree Y-axis flip.
 3.  **The Reveal:** The question is displayed in elegant serif font.
 * **Buttons:** Below the revealed card:
-* **Checkmark (▢):** "Answered" (Adds +1 to score).
-* **Joker (✕):** "Use Joker" (Skips question, hides the button for the rest of the game).
+* **Like (▢):** "Answered" (Adds +1 to score).
+* **Boon (✨):** "Skip" (Skips question, hides the button for the rest of the game).
 
 
-* **Timer (High Levels):** A thin Circle (◯) progress bar around the card that depletes. If it hits zero, the card is "Missed."
+* **Timer (Intimacy & Foreplay Only):** A thin Circle (◯) progress bar around the card that depletes. If it hits zero, the card is "Missed."
 
 ## 7. Results Page (The Settlement)
 
@@ -71,10 +71,11 @@ This is the core "Engine" of your application.
 * **Settlement Box:** A centered card calculating the difference:
 > 
 > 
-> **Total Owed: ₹[X]**
+> **Total Debt: ₹[X]**
+> *The needy takes the difference: Winner collects ₹[X].*
 
 
-* **Action:** "Play Again" or "Export Session JSON" (to Preferences).
+* **Action:** "Play Again" or "Next Level".
 
 ## 8. Preferences & Help (The Management)
 

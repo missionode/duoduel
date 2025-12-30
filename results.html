@@ -77,6 +77,8 @@
         if (currentLevel === 'acquaintance') {
             localStorage.setItem('unlocked_deepTalk', 'true');
         } else if (currentLevel === 'deepTalk') {
+            localStorage.setItem('unlocked_safeSpark', 'true');
+        } else if (currentLevel === 'safeSpark') {
             localStorage.setItem('unlocked_intimacy', 'true');
         } else if (currentLevel === 'intimacy') {
             localStorage.setItem('unlocked_foreplay', 'true');
@@ -94,7 +96,7 @@
             const side = hisScore > herScore ? 'his' : 'her';
             document.getElementById(`${side}-crown`).classList.remove('hidden');
             document.getElementById(`${side}-card`).classList.add('ring-4', 'ring-blue-500/20');
-            document.getElementById('summary-text').textContent = `${loser} owes ${winner} ₹${diff} for the entertainment and honesty provided today.`;
+            document.getElementById('summary-text').textContent = `The needy takes the difference: ${winner ? winner : 'Someone'} collects ₹${diff}.`;
             
             confetti({
                 particleCount: 150,

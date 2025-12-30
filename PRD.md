@@ -33,77 +33,140 @@ To build this project effectively, you need to provide a structured **Product Re
 
 ### Phase 3: Level Selection (`levels.html`)
 
-1. **Grid:** Show cards for levels: "Acquaintance", "Deep Talk", "Intimacy", and "Foreplay".
-2. **Lock Logic:** Only "Acquaintance" is clickable. Others have a `backdrop-blur-md` and a lock icon.
+
+
+1. **Grid:** Show cards for levels: "Acquaintance", "Deep Talk", "Safe Spark", "Intimacy", and "Foreplay".
+
+2. **Lock Logic:** Only "Acquaintance" is clickable initially. Others unlock sequentially.
+
 3. **The Cheat Code:**
+
 * A small `(?)` icon in the bottom corner.
+
 * When clicked, show a hidden input field.
-* If the user enters the secret code (e.g., `UNLOCK99`), set `localStorage.setItem('allUnlocked', 'true')` and remove the blur from all levels.
+
+* If the user enters the secret code (`ADEN`), set `localStorage.setItem('allUnlocked', 'true')` and remove locks.
 
 
-4. **Selection:** Clicking an unlocked level saves the selection and links to `toss.html`.
 
 ### Phase 4: The Toss (`toss.html`)
 
+
+
 1. **Visual:** A central coin with Triangle on one side and X on the other.
+
 2. **Logic:**
+
 * User clicks "Toss".
+
 * `Math.random()` decides the winner.
+
 * Save `tossWinner` to `localStorage`.
+
+
+
 
 
 3. **Transition:** Display "[Winner Name] Starts!" and a button to `table.html`.
 
+
+
 ### Phase 5: The Game Table (`table.html`)
 
+
+
 1. **Layout:** A split-screen UI.
+
 * **Left (Blue):** His deck.
+
 * **Right (Pink):** Her deck.
 
 
-2. **The Decks:** * Load 45 questions + 1 Joker for each gender from `cards.json`.
-* Cards are displayed **upside down** (back design uses the 4 symbols).
+
+
+
+2. **The Decks:** * Load questions from `cards.json`.
+
+* Cards are displayed **upside down**.
+
+
+
 
 
 3. **Interaction:**
+
 * The player whose turn it is clicks a card.
+
 * **CSS Animation:** The card flips 180 degrees to reveal the question.
 
 
+
+
+
 4. **Buttons (Post-Flip):**
-* **▢ Answered:** Increment `hisScore` or `herScore` in `localStorage`.
-* **✕ Joker:** Skip question. Disable the Joker button for that player for the rest of the game.
+
+* **▢ Like:** Increment `hisScore` or `herScore` in `localStorage`.
+
+* **✕ Dislike:** Decrement `hisScore` or `herScore`.
+
+* **✨ Boon:** Skip question (One use per game).
 
 
-5. **The Timer:** For higher levels, show a circular progress bar (◯) that gives the player 30-60 seconds to answer. If the time runs out, the card is discarded with 0 points.
-6. **End Trigger:** When all 90 cards are flipped, redirect to `results.html`.
+
+
+
+5. **The Timer:** Only for "Intimacy" and "Foreplay" levels. Circular progress bar.
+
+6. **End Trigger:** When all cards are flipped, redirect to `results.html`.
+
+
 
 ### Phase 6: Results & Settlement (`results.html`)
 
+
+
 1. **Score Display:** Show final counts for Him and Her.
+
 2. **Winner Logic:** `winner = scoreHis > scoreHer ? hisName : herName`.
+
 3. **Settlement Formula:** * `difference = Math.abs(scoreHis - scoreHer)`
-* `amountOwed = difference * 1`
+
+* "The needy takes the difference." The winner collects ₹[difference].
 
 
-4. **UI:** Display "Winner: [Name]" with confetti. Show a box: "The loser owes ₹[amountOwed]".
+
+
+
+4. **UI:** Display "Winner: [Name]" with confetti. Show a box: "The needy takes the difference: [Winner] collects ₹[difference]".
+
+
 
 ---
 
+
+
 ## 3. Data Structure (JSON)
+
+
 
 ### `cards.json`
 
+
+
 ```json
+
 {
-  "acquaintance": {
-    "male": ["Question 1...", "Question 2..."],
-    "female": ["Question 1...", "Question 2..."]
-  },
-  "foreplay": {
-    "male": ["Timed Activity 1...", "Timed Activity 2..."],
-    "female": ["Timed Activity 1...", "Timed Activity 2..."]
-  }
+
+  "acquaintance": { "male": [], "female": [] },
+
+  "deepTalk": { "male": [], "female": [] },
+
+  "safeSpark": { "male": [], "female": [] },
+
+  "intimacy": { "male": [], "female": [] },
+
+  "foreplay": { "male": [], "female": [] }
+
 }
 
 ```

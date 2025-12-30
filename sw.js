@@ -1,4 +1,4 @@
-const CACHE_NAME = 'duoduel-v3';
+const CACHE_NAME = 'duoduel-v5';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -15,6 +15,7 @@ const ASSETS_TO_CACHE = [
   './assets/img/logo.png',
   './assets/img/Acquaintance.png',
   './assets/img/deep talk.png',
+  './assets/img/safespark.png',
   './assets/img/intimacy.png',
   './assets/img/foreplay.png',
   './android-chrome-192x192.png',
