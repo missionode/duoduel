@@ -4,18 +4,19 @@
 
 ## 🎮 Game Concept
 
-The game guides couples through **4 Stages of Escalation**, inspired by "The Charmer's Strategy":
+The game guides couples through **5 Stages of Escalation**:
 
-1.  **Acquaintance:** Playful ice-breakers to lower guards.
-2.  **Deep Talk:** Vulnerable questions to build emotional intimacy.
-3.  **Intimacy:** Bold prompts to shift focus to the "here and now."
-4.  **Foreplay:** High-intensity sensory dares and physical challenges.
+1.  **Acquaintance:** Playful ice-breakers to lower guards (No Timer).
+2.  **Deep Talk:** Vulnerable questions to build emotional intimacy and set boundaries (No Timer).
+3.  **Safe Spark:** A diagnostic bridge to assess the safety and sustainability of the connection (No Timer).
+4.  **Intimacy:** Bold prompts to shift focus to the "here and now" (Timer Active).
+5.  **Foreplay:** High-intensity sensory dares and physical challenges (Timer Active).
 
-### Rules of Engagement
+### The Terms of Entanglement
 *   **Like (▢):** You enjoyed the answer. (+1 Point)
 *   **Dislike (✕):** The answer didn't land. (-1 Point)
 *   **Joker (✨):** Skip a question without penalty (One use per game).
-*   **Settlement:** At the end, the loser pays the score difference to the winner (monetary or favors).
+*   **Settlement:** The needy takes the difference. The winner collects the score difference from the other player.
 
 ---
 
