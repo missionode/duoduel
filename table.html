@@ -213,8 +213,11 @@
             const data = await response.json();
             const levelCards = data[gameState.level];
             
-            gameState.questions.his = shuffle(levelCards.male);
-            gameState.questions.her = shuffle(levelCards.female);
+            const shouldShuffle = !['foreplay', 'intimacy'].includes(gameState.level);
+
+            gameState.questions.his = shouldShuffle ? shuffle(levelCards.male) : levelCards.male;
+            gameState.questions.her = shouldShuffle ? shuffle(levelCards.female) : levelCards.female;
+            
             gameState.totalQuestions = Math.min(gameState.questions.his.length, gameState.questions.her.length);
 
             updateTurnUI();
