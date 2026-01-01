@@ -77,16 +77,29 @@
 
     <div class="fixed inset-0 flex flex-col md:flex-row">
         
-        <!-- His Side -->
-        <div id="his-area" class="absolute inset-0 flex flex-col items-center justify-center p-8 transition-all duration-500 bg-blue-50 z-10">
-            <div class="absolute top-8 left-8 flex items-center gap-4 z-20">
+        <!-- Global Scoreboard -->
+        <div class="absolute top-8 left-8 right-8 flex justify-between items-start z-40 pointer-events-none">
+            <!-- His Score -->
+            <div class="flex items-center gap-4 pointer-events-auto">
                 <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-md" id="his-score-disp">0</div>
                 <div>
                     <p class="text-[10px] uppercase tracking-widest text-blue-600 font-bold" id="his-name-label">HIS NAME</p>
-                    <p class="text-xs text-gray-400">Score</p>
+                    <p class="text-xs text-gray-400 text-[10px]">Score</p>
                 </div>
             </div>
 
+            <!-- Her Score -->
+            <div class="flex items-center gap-4 text-right flex-row-reverse pointer-events-auto">
+                <div class="w-8 h-8 rounded-full bg-pink-600 flex items-center justify-center text-white font-bold text-sm shadow-md" id="her-score-disp">0</div>
+                <div>
+                    <p class="text-[10px] uppercase tracking-widest text-pink-600 font-bold" id="her-name-label">HER NAME</p>
+                    <p class="text-xs text-gray-400 text-[10px]">Score</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- His Side -->
+        <div id="his-area" class="absolute inset-0 flex flex-col items-center justify-center p-8 transition-all duration-500 bg-blue-50 z-10">
             <div class="card-container mt-16" id="his-card-container">
                 <div class="card" id="his-card">
                     <div class="card-face card-back shadow-2xl bg-blue-600 text-white">
@@ -130,14 +143,6 @@
 
         <!-- Her Side -->
         <div id="her-area" class="absolute inset-0 flex flex-col items-center justify-center p-8 transition-all duration-500 bg-pink-50 z-0">
-            <div class="absolute top-8 right-8 flex items-center gap-4 text-right flex-row-reverse z-20">
-                <div class="w-8 h-8 rounded-full bg-pink-600 flex items-center justify-center text-white font-bold text-sm shadow-md" id="her-score-disp">0</div>
-                <div>
-                    <p class="text-[10px] uppercase tracking-widest text-pink-600 font-bold" id="her-name-label">HER NAME</p>
-                    <p class="text-xs text-gray-400">Score</p>
-                </div>
-            </div>
-
             <div class="card-container mt-16" id="her-card-container">
                 <div class="card" id="her-card">
                     <div class="card-face card-back shadow-2xl bg-pink-600 text-white">
