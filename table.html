@@ -212,6 +212,7 @@
             const response = await fetch('assets/json/cards.json');
             const data = await response.json();
             const levelCards = data[gameState.level];
+            gameState.pointsPerAction = (levelCards.points !== undefined) ? levelCards.points : 1;
             
             const shouldShuffle = !['foreplay', 'intimacy'].includes(gameState.level);
 
@@ -347,11 +348,11 @@
 
             if (type === 'answered') {
                 SoundFX.success(); // Play Like sound
-                gameState[`${side}Score`]++;
+                gameState[`${side}Score`] += gameState.pointsPerAction;
                 document.getElementById(`${side}-score-disp`).textContent = gameState[`${side}Score`];
             } else if (type === 'pass') {
                 SoundFX.failure(); // Play Dislike sound
-                gameState[`${side}Score`]--;
+                gameState[`${side}Score`] -= gameState.pointsPerAction;
                 document.getElementById(`${side}-score-disp`).textContent = gameState[`${side}Score`];
             } else if (type === 'joker') {
                 SoundFX.joker(); // Play Joker sound
