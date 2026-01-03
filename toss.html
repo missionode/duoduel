@@ -51,7 +51,7 @@
 
     <div class="text-center mb-12">
         <h1 class="text-3xl font-black serif mb-2">The Hand of Fate</h1>
-        <p class="text-gray-500 uppercase tracking-widest text-xs">Triangle: <span id="his-name">Him</span> | Cross: <span id="her-name">Her</span></p>
+        <p id="toss-info" class="text-gray-500 uppercase tracking-widest text-xs">Triangle: <span id="his-name">Him</span> | Cross: <span id="her-name">Her</span></p>
     </div>
 
     <div class="coin-container mb-12">
@@ -79,12 +79,20 @@
         const resultText = document.getElementById('result-text');
         const hisNameDisp = document.getElementById('his-name');
         const herNameDisp = document.getElementById('her-name');
+        const tossInfo = document.getElementById('toss-info');
 
         const hisName = localStorage.getItem('hisName') || 'Him';
         const herName = localStorage.getItem('herName') || 'Her';
+        const selectedLevel = localStorage.getItem('selectedLevel');
 
-        hisNameDisp.textContent = hisName;
-        herNameDisp.textContent = herName;
+        if (selectedLevel === 'safeSpark') {
+            tossInfo.textContent = "Note: The winner of this toss will play the complete round.";
+            tossInfo.classList.remove('uppercase');
+            tossInfo.classList.add('normal-case', 'italic', 'font-medium', 'text-blue-600');
+        } else {
+            hisNameDisp.textContent = hisName;
+            herNameDisp.textContent = herName;
+        }
 
         tossBtn.addEventListener('click', () => {
             SoundFX.start(); // Play toss sound
