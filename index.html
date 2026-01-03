@@ -130,14 +130,34 @@
 
             // Load Content
             try {
-                const response = await fetch('assets/json/content.json');
-                const data = await response.json();
+                const [contentRes, cardsRes] = await Promise.all([
+                    fetch('assets/json/content.json'),
+                    fetch('assets/json/cards.json')
+                ]);
+                const data = await contentRes.json();
+                const cards = await cardsRes.json();
+
+                // Calculate Dynamic Deck Stats
+                let minQ = Infinity;
+                let maxQ = 0;
+                Object.values(cards).forEach(level => {
+                    if (level.male && Array.isArray(level.male)) {
+                        const count = level.male.length;
+                        minQ = Math.min(minQ, count);
+                        maxQ = Math.max(maxQ, count);
+                    }
+                });
+
+                const minDeck = minQ * 2 + 2;
+                const maxDeck = maxQ * 2 + 2;
+                const deckRule = `${minDeck}-${maxDeck} Card Decks (${minQ}-${maxQ} Questions + 1 Boon per player).`;
                 
                 if(rulesList && data.landing.rules) {
                     data.landing.rules.forEach(rule => {
+                        const finalRule = rule.replace('{{DYNAMIC_DECK_RULE}}', deckRule);
                         const li = document.createElement('li');
                         li.className = 'flex gap-3 items-start';
-                        li.innerHTML = `<span class="text-blue-500 mt-1">△</span> <span>${rule}</span>`;
+                        li.innerHTML = `<span class="text-blue-500 mt-1">△</span> <span>${finalRule}</span>`;
                         rulesList.appendChild(li);
                     });
                 }

@@ -219,7 +219,7 @@
             const levelCards = data[gameState.level];
             gameState.pointsPerAction = (levelCards.points !== undefined) ? levelCards.points : 1;
             
-            const shouldShuffle = !['foreplay', 'intimacy'].includes(gameState.level);
+            const shouldShuffle = !['foreplay', 'intimacy', 'safeSpark'].includes(gameState.level);
 
             gameState.questions.his = shouldShuffle ? shuffle(levelCards.male) : levelCards.male;
             gameState.questions.her = shouldShuffle ? shuffle(levelCards.female) : levelCards.female;
