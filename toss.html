@@ -117,7 +117,11 @@
                 localStorage.setItem('tossWinner', isHis ? 'his' : 'her');
                 localStorage.setItem('currentTurn', isHis ? 'his' : 'her');
                 
-                resultText.textContent = `${winner} Starts!`;
+                if (selectedLevel === 'safeSpark') {
+                     resultText.textContent = `${winner} will guide this journey.`;
+                } else {
+                     resultText.textContent = `${winner} Starts!`;
+                }
                 resultText.classList.add('animate-bounce');
                 
                 tossBtn.classList.add('hidden');

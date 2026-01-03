@@ -5,7 +5,7 @@
     "rules": [
       "{{DYNAMIC_DECK_RULE}}",
       "Hit 'Like' (+Points) if you enjoy the answer.",
-      "Hit 'Dislike' (-Points) if the answer doesn't land.",
+      "Hit 'Dislike' (-Points) if the answer doesn't land. Activated only after boon is used",
       "Use your Boon (✨) wisely to skip a question once without penalty.",
       "The needy takes the difference or share wisely."
     ]

@@ -19,7 +19,7 @@
         <p class="text-gray-500 uppercase tracking-widest text-xs">A Bridge Has Been Built</p>
     </header>
 
-    <div class="max-w-2xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+    <div id="score-grid" class="max-w-2xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
         <!-- His Result -->
         <div class="bg-white py-16 px-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col items-center relative" id="his-card">
             <p class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-4" id="his-name-res">HIS NAME</p>
@@ -37,7 +37,14 @@
         </div>
     </div>
 
-    <div class="max-w-md w-full bg-gray-900 text-white p-8 rounded-3xl text-center shadow-2xl relative overflow-hidden">
+    <!-- Safe Spark Winner Card -->
+    <div id="safespark-card" class="hidden max-w-md w-full bg-white p-12 rounded-3xl border border-blue-100 shadow-xl mb-12 flex-col items-center text-center">
+        <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center text-4xl mb-6 text-blue-600">✨</div>
+        <h2 class="text-3xl font-black serif mb-4 text-gray-900">You are the winner</h2>
+        <p class="text-gray-500 leading-relaxed">of this round.</p>
+    </div>
+
+    <div id="debt-card" class="max-w-md w-full bg-gray-900 text-white p-8 rounded-3xl text-center shadow-2xl relative overflow-hidden">
         <div class="relative z-10">
             <p class="text-xs uppercase tracking-[0.3em] opacity-60 mb-4">Total Debt</p>
             <h2 class="text-5xl font-black serif mb-6" id="amount-res">₹0</h2>
@@ -70,6 +77,22 @@
         const winner = hisScore > herScore ? hisName : (herScore > hisScore ? herName : null);
         const loser = hisScore > herScore ? herName : (herScore > hisScore ? hisName : null);
         const currentLevel = localStorage.getItem('selectedLevel');
+
+        // Safe Spark Logic
+        if (currentLevel === 'safeSpark') {
+            document.getElementById('score-grid').classList.add('hidden');
+            document.getElementById('debt-card').classList.add('hidden');
+            document.getElementById('safespark-card').classList.remove('hidden');
+            document.getElementById('safespark-card').classList.add('flex');
+            
+            // Trigger confetti for the "winner"
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#0284c7', '#e11d48', '#ffffff']
+            });
+        }
 
         // Unlock Progression Logic
         const nextLevelBtn = document.querySelector('button[onclick="window.location.href=\'levels.html\'"]:last-child');
