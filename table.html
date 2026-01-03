@@ -78,7 +78,7 @@
     <div class="fixed inset-0 flex flex-col md:flex-row">
         
         <!-- Global Scoreboard -->
-        <div class="absolute top-8 left-8 right-8 flex justify-between items-start z-40 pointer-events-none">
+        <div id="scoreboard" class="absolute top-8 left-8 right-8 flex justify-between items-start z-40 pointer-events-none">
             <!-- His Score -->
             <div class="flex items-center gap-4 pointer-events-auto">
                 <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-md" id="his-score-disp">0</div>
@@ -213,6 +213,12 @@
         document.getElementById('her-name-label').textContent = herName.toUpperCase();
         document.getElementById('level-title').textContent = gameState.level.charAt(0).toUpperCase() + gameState.level.slice(1);
 
+        // Hide score for safeSpark
+        if (gameState.level === 'safeSpark') {
+            const scoreboard = document.getElementById('scoreboard');
+            if (scoreboard) scoreboard.classList.add('hidden');
+        }
+
         async function initGame() {
             const response = await fetch('assets/json/cards.json');
             const data = await response.json();
@@ -309,6 +315,18 @@
                 jokerBadge.title = "Boon Available";
                 cardFront.appendChild(jokerBadge);
             }
+
+            // Dislike Button State Logic
+            const dislikeBtn = document.getElementById(`${side}-pass`);
+            if (!gameState[`${side}JokerUsed`]) {
+                dislikeBtn.disabled = true;
+                dislikeBtn.classList.add('opacity-30', 'cursor-not-allowed');
+                dislikeBtn.title = "Use Boon first to unlock Dislike";
+            } else {
+                dislikeBtn.disabled = false;
+                dislikeBtn.classList.remove('opacity-30', 'cursor-not-allowed');
+                dislikeBtn.title = "Dislike available";
+            }
         }
 
         function playBeep() {
@@ -356,7 +374,7 @@
                 gameState[`${side}Score`] += gameState.pointsPerAction;
                 document.getElementById(`${side}-score-disp`).textContent = gameState[`${side}Score`];
             } else if (type === 'pass') {
-                SoundFX.failure(); // Play Dislike sound
+                SoundFX.success(); // Play same sound as Like
                 gameState[`${side}Score`] -= gameState.pointsPerAction;
                 document.getElementById(`${side}-score-disp`).textContent = gameState[`${side}Score`];
             } else if (type === 'joker') {
@@ -364,11 +382,26 @@
                 gameState[`${side}JokerUsed`] = true;
                 document.getElementById(`${side}-joker`).disabled = true;
                 document.getElementById(`${side}-joker`).classList.add('opacity-20', 'cursor-not-allowed');
+                
+                // Unlock Dislike button immediately
+                const dislikeBtn = document.getElementById(`${side}-pass`);
+                dislikeBtn.disabled = false;
+                dislikeBtn.classList.remove('opacity-30', 'cursor-not-allowed');
+                dislikeBtn.title = "Dislike available";
             }
 
             gameState.currentIndex[side]++;
             
-            if (gameState.currentIndex.his >= gameState.totalQuestions && gameState.currentIndex.her >= gameState.totalQuestions) {
+            let isGameOver = false;
+            if (gameState.level === 'safeSpark') {
+                 // For safeSpark, game ends when the active player finishes their cards
+                 isGameOver = gameState.currentIndex[side] >= gameState.questions[side].length;
+            } else {
+                 // Normal mode: game ends when both finish
+                 isGameOver = gameState.currentIndex.his >= gameState.totalQuestions && gameState.currentIndex.her >= gameState.totalQuestions;
+            }
+
+            if (isGameOver) {
                 endGame();
             }
             else {
@@ -383,7 +416,12 @@
             // Reset card for next turn
             setTimeout(() => {
                 card.classList.remove('flipped');
-                gameState.currentTurn = (side === 'his' ? 'her' : 'his');
+                
+                // For safeSpark, the winner plays all cards (no turn switching)
+                if (gameState.level !== 'safeSpark') {
+                    gameState.currentTurn = (side === 'his' ? 'her' : 'his');
+                }
+                
                 updateTurnUI();
                 
                 // Clear any dynamically added badges if necessary (none currently)
