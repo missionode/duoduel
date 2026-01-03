@@ -91,7 +91,14 @@
             tossBtn.disabled = true;
             tossBtn.classList.add('opacity-30');
             
-            const isHis = Math.random() > 0.5;
+            const selectedLevel = localStorage.getItem('selectedLevel');
+            let isHis = Math.random() > 0.5;
+
+            // Force Her to win if level is safeSpark
+            if (selectedLevel === 'safeSpark') {
+                isHis = false;
+            }
+
             const rotations = 10 + Math.floor(Math.random() * 10);
             const degree = isHis ? (rotations * 360) : (rotations * 360 + 180);
             
